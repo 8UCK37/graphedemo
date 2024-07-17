@@ -4,7 +4,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:graphedemo/pages/homepage.dart';
 import 'package:graphedemo/pages/loginpage.dart';
 
-
 class AuthService {
   Future<void> signInWithGoogle(BuildContext context) async {
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
@@ -28,6 +27,59 @@ class AuthService {
         // ignore: prefer_const_constructors
         MaterialPageRoute(builder: (context) => HomePage()),
       );
+    }
+  }
+
+  Future<void> signInWithEmail(
+      BuildContext context, String email, String password) async {
+    try {
+      final userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      // Check if the user is successfully signed in
+      if (userCredential.user != null) {
+        // Navigate to the HomeScreenWidget
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacement(
+          context,
+          // ignore: prefer_const_constructors
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        debugPrint('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        debugPrint('Wrong password provided for that user.');
+      }
+    }
+  }
+
+  Future<void> signUpWithEmail(
+      BuildContext context, String email, String password) async {
+    try {
+      final userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      //signs in the user if try is successful
+      if (userCredential.user != null) {
+        // Navigate to the HomeScreenWidget
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacement(
+          context,
+          // ignore: prefer_const_constructors
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        debugPrint('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        debugPrint('The account already exists for that email.');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 

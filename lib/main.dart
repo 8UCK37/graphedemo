@@ -4,6 +4,8 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:graphedemo/firebase_options.dart';
 import 'package:graphedemo/pages/homepage.dart';
 import 'package:graphedemo/pages/loginpage.dart';
+import 'package:graphedemo/services/data_service.dart';
+import 'package:provider/provider.dart';
 import 'dependency_injection.dart';
 import 'global.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -54,15 +56,20 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'FreeWeatherApp',
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<DataService>(create: (context) => DataService()),
+      ],
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'FreeWeatherApp',
+        theme: ThemeData(
+          primarySwatch: Colors.deepPurple,
+          useMaterial3: true,
+        ),
+        home: isLogin ? const HomePage() : const LoginPage(),
+        navigatorKey: GlobalVariable.navState,
       ),
-      home: isLogin ? const HomePage() : const LoginPage(),
-      navigatorKey: GlobalVariable.navState,
     );
   }
 }

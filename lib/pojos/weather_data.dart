@@ -34,20 +34,20 @@ class WeatherDataPojo {
 
 class Current {
     String? observationTime;
-    int? temperature;
-    int? weatherCode;
+    double? temperature;
+    double? weatherCode;
     List<String>? weatherIcons;
     List<String>? weatherDescriptions;
-    int? windSpeed;
-    int? windDegree;
+    double? windSpeed;
+    double? windDegree;
     String? windDir;
-    int? pressure;
-    int? precip;
-    int? humidity;
-    int? cloudcover;
-    int? feelslike;
-    int? uvIndex;
-    int? visibility;
+    double? pressure;
+    double? precip;
+    double? humidity;
+    double? cloudcover;
+    double? feelslike;
+    double? uvIndex;
+    double? visibility;
     String? isDay;
 
     Current({
@@ -71,20 +71,20 @@ class Current {
 
     factory Current.fromJson(Map<String, dynamic> json) => Current(
         observationTime: json["observation_time"],
-        temperature: json["temperature"],
-        weatherCode: json["weather_code"],
+        temperature: json["temperature"]?.toDouble(),
+        weatherCode: json["weather_code"]?.toDouble(),
         weatherIcons: json["weather_icons"] == null ? [] : List<String>.from(json["weather_icons"]!.map((x) => x)),
         weatherDescriptions: json["weather_descriptions"] == null ? [] : List<String>.from(json["weather_descriptions"]!.map((x) => x)),
-        windSpeed: json["wind_speed"],
-        windDegree: json["wind_degree"],
+        windSpeed: json["wind_speed"]?.toDouble(),
+        windDegree: json["wind_degree"]?.toDouble(),
         windDir: json["wind_dir"],
-        pressure: json["pressure"],
-        precip: json["precip"],
-        humidity: json["humidity"],
-        cloudcover: json["cloudcover"],
-        feelslike: json["feelslike"],
-        uvIndex: json["uv_index"],
-        visibility: json["visibility"],
+        pressure: json["pressure"]?.toDouble(),
+        precip: json["precip"]?.toDouble(),
+        humidity: json["humidity"]?.toDouble(),
+        cloudcover: json["cloudcover"]?.toDouble(),
+        feelslike: json["feelslike"]?.toDouble(),
+        uvIndex: json["uv_index"]?.toDouble(),
+        visibility: json["visibility"]?.toDouble(),
         isDay: json["is_day"],
     );
 
@@ -116,7 +116,7 @@ class Location {
     String? lon;
     String? timezoneId;
     String? localtime;
-    int? localtimeEpoch;
+    double? localtimeEpoch;
     String? utcOffset;
 
     Location({
@@ -139,7 +139,7 @@ class Location {
         lon: json["lon"],
         timezoneId: json["timezone_id"],
         localtime: json["localtime"],
-        localtimeEpoch: json["localtime_epoch"],
+        localtimeEpoch: json["localtime_epoch"]?.toDouble(),
         utcOffset: json["utc_offset"],
     );
 

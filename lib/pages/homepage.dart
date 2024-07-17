@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graphedemo/services/auth_service.dart';
 import 'package:graphedemo/services/data_service.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_animation/weather_animation.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,9 +20,43 @@ class _HomePageState extends State<HomePage> {
     dataService.fetchWeatherData(searchTerm);
   }
 
+  Widget switchWeather(String weatherDesc) {
+    switch (weatherDesc) {
+      case "Sunny" :
+        return const WeatherSceneWidget(
+          weatherScene: WeatherScene.scorchingSun,
+        );
+      case "Clear":
+        return const WeatherSceneWidget(
+          weatherScene: WeatherScene.scorchingSun,
+        );
+      case "Partly Cloudy":
+        return const WeatherSceneWidget(
+          weatherScene: WeatherScene.stormy,
+        );
+      case "Overcast":
+        return const WeatherSceneWidget(
+          weatherScene: WeatherScene.stormy,
+        );
+      case "Mist":
+        return const WeatherSceneWidget(
+          weatherScene: WeatherScene.sunset,
+        );
+      case "Patchy light rain":
+        return const WeatherSceneWidget(
+          weatherScene: WeatherScene.rainyOvercast,
+        );
+      default:
+        return const WeatherSceneWidget(
+          weatherScene: WeatherScene.weatherEvery,
+        );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final dataService = Provider.of<DataService>(context, listen: true);
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -103,6 +138,165 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+              if (dataService.data != null)
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(40)),
+                    child: Card(
+                      elevation: 10,
+                      color: Colors.transparent,
+                      child: Stack(
+                        children: [
+                          Container(
+                            height: 160,
+                            width: MediaQuery.of(context).size.width,
+                            child:  ClipRRect(
+                              borderRadius: BorderRadius.all(Radius.circular(30)),
+                              child: switchWeather(dataService.data!.current!.weatherDescriptions![0]),
+                            ),
+                          ),
+                          Center(
+                            child: Container(
+                              height: 159,
+                              width: MediaQuery.of(context).size.width,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                dataService.data!.location!.name!,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  dataService.data!.current!
+                                                      .weatherDescriptions![0],
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.normal,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        0, 8, 15, 0),
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      dataService.data!.current!
+                                                          .temperature!
+                                                          .toString(),
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 40,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                      ),
+                                                    ),
+                                                    const Text(
+                                                      '°C',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Text(
+                                                "Feels like ${dataService.data!.current!.feelslike}",
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            "${dataService.data!.current!.windSpeed} km/hr",
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            "${dataService.data!.current!.windDegree}° ${dataService.data!.current!.windDir!}",
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            "Humidity: ${dataService.data!.current!.humidity}%",
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
             ],
           ),
         ),

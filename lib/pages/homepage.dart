@@ -152,12 +152,12 @@ class _HomePageState extends State<HomePage> {
                             height: 160,
                             width: MediaQuery.of(context).size.width,
                             child:  ClipRRect(
-                              borderRadius: BorderRadius.all(Radius.circular(30)),
+                              borderRadius: const BorderRadius.all(Radius.circular(30)),
                               child: switchWeather(dataService.data!.current!.weatherDescriptions![0]),
                             ),
                           ),
                           Center(
-                            child: Container(
+                            child: SizedBox(
                               height: 159,
                               width: MediaQuery.of(context).size.width,
                               child: Column(

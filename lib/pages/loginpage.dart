@@ -46,7 +46,7 @@ class _LoginActivityState extends State<LoginPage> {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 alignment: const AlignmentDirectional(0, 0),
-                child: const Text('GrapheWeather',
+                child: const Text('WeatherSearch',
                     style: TextStyle(
                       fontFamily: 'Caveat',
                       color: Colors.white,
@@ -54,15 +54,18 @@ class _LoginActivityState extends State<LoginPage> {
                       fontWeight: FontWeight.w600,
                     )),
               ),
-              // ClipRRect(
-              //   borderRadius: BorderRadius.circular(250),
-              //   child: Image.asset(
-              //     'assets/images/megaphone.png',
-              //     width: MediaQuery.sizeOf(context).width * 0.5,
-              //     height: 200,
-              //     fit: BoxFit.fill,
-              //   ),
-              // ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(0),
+                child: Image.asset(
+                  'assets/images/cloudy.png',
+                  width: MediaQuery.sizeOf(context).width * 0.5,
+                  height: 200,
+                  fit: BoxFit.fill,
+                ),
+              ),
+              const SizedBox(
+                height: 35,
+              ),
               Container(
                 decoration: const BoxDecoration(color: Colors.white,borderRadius: BorderRadius.all(Radius.circular(10))),
                 width: MediaQuery.of(context).size.width * .9,

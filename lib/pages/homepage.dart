@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget switchWeather(String weatherDesc) {
     switch (weatherDesc) {
-      case "Sunny" :
+      case "Sunny":
         return const WeatherSceneWidget(
           weatherScene: WeatherScene.scorchingSun,
         );
@@ -66,11 +66,32 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text("Graphe Weather"),
-              GestureDetector(
-                  onTap: () {
-                    AuthService().signOut(context);
-                  },
-                  child: const Icon(Icons.logout))
+              Row(
+                children: [
+                  CircleAvatar(
+                    maxRadius: 22,
+                    child: ClipOval(
+                      child: FadeInImage.assetNetwork(
+                        placeholder:
+                            'assets/images/profile.png', 
+                        image: dataService.user==null? '' : dataService.user.photoURL,
+                        fit: BoxFit.cover,
+                        imageErrorBuilder: (context, error, stackTrace) {
+                          return Image.asset('assets/images/profile.png',
+                              fit: BoxFit.cover);
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 25),
+                  GestureDetector(
+                    onTap: () {
+                      AuthService().signOut(context);
+                    },
+                    child: const Icon(Icons.logout),
+                  ),
+                ],
+              ),
             ],
           ),
           leading: const Icon(Icons.menu),
@@ -138,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              if (dataService.data != null)
+              if (dataService.data != null && dataService.data!.current!=null)
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: ClipRRect(
@@ -151,9 +172,11 @@ class _HomePageState extends State<HomePage> {
                           Container(
                             height: 160,
                             width: MediaQuery.of(context).size.width,
-                            child:  ClipRRect(
-                              borderRadius: const BorderRadius.all(Radius.circular(30)),
-                              child: switchWeather(dataService.data!.current!.weatherDescriptions![0]),
+                            child: ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(30)),
+                              child: switchWeather(dataService
+                                  .data!.current!.weatherDescriptions![0]),
                             ),
                           ),
                           Center(
@@ -173,7 +196,8 @@ class _HomePageState extends State<HomePage> {
                                           child: Row(
                                             children: [
                                               Text(
-                                                dataService.data!.location!.name!,
+                                                dataService
+                                                    .data!.location!.name!,
                                                 style: const TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 20,
@@ -189,7 +213,8 @@ class _HomePageState extends State<HomePage> {
                                                   style: const TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 20,
-                                                    fontWeight: FontWeight.normal,
+                                                    fontWeight:
+                                                        FontWeight.normal,
                                                   ),
                                                 ),
                                               ),

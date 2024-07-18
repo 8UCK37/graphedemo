@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:graphedemo/pages/homepage.dart';
 import 'package:graphedemo/pages/loginpage.dart';
+import 'package:graphedemo/services/data_service.dart';
+import 'package:provider/provider.dart';
 
 class AuthService {
   Future<void> signInWithGoogle(BuildContext context) async {
@@ -18,8 +20,12 @@ class AuthService {
     final userCredential =
         await FirebaseAuth.instance.signInWithCredential(credential);
 
+    // ignore: use_build_context_synchronously
+    final dataService = Provider.of<DataService>(context, listen: false);
     // Check if the user is successfully signed in
     if (userCredential.user != null) {
+      //debugPrint(userCredential.user.toString());
+      dataService.updateUser(userCredential.user);
       // Navigate to the HomeScreenWidget
       // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
@@ -86,7 +92,9 @@ class AuthService {
   Future<void> signOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     await GoogleSignIn().signOut();
-
+     // ignore: use_build_context_synchronously
+     final dataService = Provider.of<DataService>(context, listen: false);
+     dataService.updateUser(null);
     // Navigate to the SignInScreen or any other screen you want
     // ignore: use_build_context_synchronously
     Navigator.push(

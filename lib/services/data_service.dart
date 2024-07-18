@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -9,6 +7,13 @@ import 'package:graphedemo/pojos/weather_data.dart';
 class DataService extends ChangeNotifier {
   NetworkController networkController = NetworkController();
   WeatherDataPojo? data;
+  var user;
+
+  void updateUser(var newUser) {
+    user = newUser;
+    //debugPrint(user.displayName);
+    notifyListeners();
+  }
 
   void fetchWeatherData(String searchTerm) async {
     if (await networkController.noInternet()) {
